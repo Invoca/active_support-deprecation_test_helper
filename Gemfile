@@ -10,5 +10,6 @@ gemspec
 gem "appraisal"
 gem "pry"
 gem 'pry-byebug'
-gem "rake",  "~> 13.0"
-gem "rspec", "~> 3.0"
+gem "rake",                  "~> 13.0"
+gem "rspec",                 "~> 3.0"
+gem "rspec_junit_formatter", "~> 0.4"
