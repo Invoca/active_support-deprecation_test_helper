@@ -105,12 +105,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
     end
 
     describe "when deprecation warning occurs that is not allowed" do
-      let(:expected_warning) { <<~EOS.chomp }
-        =====
-        Unexpected Deprecation Warnings Encountered
-          hello_world is deprecated and will be removed from Rails 6.0 (this is not allowed)
-        =====
-      EOS
+      let(:expected_warning) { /hello_world is deprecated and will be removed/ }
 
       before do
         expect(described_class).to receive(:warn).with(expected_warning).and_return(true)
