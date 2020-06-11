@@ -1,8 +1,7 @@
 # ActiveSupport::DeprecationTestHelper
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/active_support/deprecation_test_helper`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A test helper that removes `ActiveSupport::Deprecation` noise from being interlaced in your test output.  Instead this gem collects
+any and all deprecation warnings that occur during your tests, and succinctly reports them at the end of the test run.
 
 ## Installation
 
@@ -22,7 +21,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Basic Configuration
+In order to capture and report all deprecation warnings at the end of the test run, add the following to your test setup
+```ruby
+require 'active_support/deprecation_test_helper'
+ActiveSupport::DeprecationTestHelper.configure
+```
+
+### Whitelisting Deprecation Warnings
+If you have some deprecations warnings that you're not going to resolve, and would like to not be alerted to them at the end
+of your test run, you can allow them with the following
+
+```ruby
+ActiveSupport::DeprecationTestHelper.allow_warning("The full deprecation warning string")
+```
+
+Or you can use a regex if you would like to match a series of deprecation warnings
+
+```ruby
+ActiveSupport::DeprecationTestHelper.allow_warning(/will be removed from Rails 6.0/)
+```
 
 ## Development
 
@@ -32,4 +50,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/active_support-deprecation_test_helper.
+Bug reports and pull requests are welcome on GitHub at https://github.com/Invoca/active_support-deprecation_test_helper.

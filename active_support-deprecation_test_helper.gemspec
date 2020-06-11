@@ -11,15 +11,13 @@ Gem::Specification.new do |spec|
 
   spec.summary       = ""
   spec.description   = ""
-  spec.homepage      = "https://github.com/Invoca/activesupport-deprecation_test_helper"
+  spec.homepage      = "https://github.com/Invoca/active_support-deprecation_test_helper"
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
   spec.metadata = {
-    'allowed_push_host' => '',
-    'homepage_uri'      => 'https://github.com/Invoca/activesupport-deprecation_test_helper',
-    'source_code_uri'   => 'https://github.com/Invoca/activesupport-deprecation_test_helper',
-    'changelog_uri'     => 'https://github.com/Invoca/activesupport-deprecation_test_helper/blob/master/CHANGELOG.md'
+    'allowed_push_host' => 'https://rubygems.org',
+    'homepage_uri'      => 'https://github.com/Invoca/active_support-deprecation_test_helper',
+    'source_code_uri'   => 'https://github.com/Invoca/active_support-deprecation_test_helper',
+    'changelog_uri'     => 'https://github.com/Invoca/active_support-deprecation_test_helper/blob/master/CHANGELOG.md'
   }
 
   # Specify which files should be added to the gem when it is released.
