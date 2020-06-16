@@ -28,9 +28,8 @@ require 'active_support/deprecation_test_helper'
 ActiveSupport::DeprecationTestHelper.configure
 ```
 
-### Whitelisting Deprecation Warnings
-If you have some deprecations warnings that you're not going to resolve, and would like to not be alerted to them at the end
-of your test run, you can allow them with the following
+### Expected Deprecation Warnings
+If you have some deprecations warnings that you're not going to resolve, and would like to omit them from the test run report, you can do the following
 
 ```ruby
 ActiveSupport::DeprecationTestHelper.allow_warning("The full deprecation warning string")
@@ -39,7 +38,7 @@ ActiveSupport::DeprecationTestHelper.allow_warning("The full deprecation warning
 Or you can use a regex if you would like to match a series of deprecation warnings
 
 ```ruby
-ActiveSupport::DeprecationTestHelper.allow_warning(/will be removed from Rails 6.0/)
+ActiveSupport::DeprecationTestHelper.allow_warning(/will be removed from Rails 6\.0/)
 ```
 
 ## Development
