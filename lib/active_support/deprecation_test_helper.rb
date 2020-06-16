@@ -55,27 +55,16 @@ module ActiveSupport
 
       protected
 
-      def unexpected_warnings
-        @unexpected_warnings ||= Set.new
-      end
-
-      def allowed_warnings
-        @allowed_warnings ||= Set.new
-      end
+      attr_reader :unexpected_warnings, :allowed_warnings
 
       def expected_warning?(warning)
-        allowed_warnings.any? do |allowed_warning|
-          case allowed_warning
-          when Regexp
-            warning.match?(allowed_warning)
-          else
-            warning == allowed_warning
-          end
-        end
+        allowed_warnings.any? { |allowed_warning| allowed_warning === warning }
       end
     end
 
-    def deprecation_warning(*args)
+    self.reset
+
+    def deprecation_warning(*_args)
       super.tap { |warning| ActiveSupport::DeprecationTestHelper.track_warning(warning) }
     end
 
