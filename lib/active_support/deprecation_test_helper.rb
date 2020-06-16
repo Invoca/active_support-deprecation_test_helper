@@ -1,20 +1,24 @@
 # frozen_string_literal: true
 
 require "active_support/deprecation_test_helper/version"
-require 'active_support/deprecation'
+require "active_support/deprecation"
+require "active_support/core_ext/object/inclusion"
 
 module ActiveSupport
   module DeprecationTestHelper
+    CONFIGURABLE_TEST_FRAMEWORKS = [:rspec, :minitest].freeze
+
     class << self
-      def configure
-        defined?(Minitest) || defined?(RSpec) or raise 'Unexpected test suite encountered. This only supports Rspec and Minitest'
+      def configure(test_framework)
+        test_framework.in?(CONFIGURABLE_TEST_FRAMEWORKS) or raise "Unexpected test framework encountered. Supported frameworks are #{CONFIGURABLE_TEST_FRAMEWORKS.join(' ')}"
 
         ActiveSupport::Deprecation.include(self)
 
-        if defined?(Minitest)
-          Minitest.after_run(after_all_callback)
-        elsif defined?(RSpec)
+        case test_framework
+        when :rspec
           RSpec.configuration.after(:all, after_all_callback)
+        when :minitest
+          Minitest.after_run(after_all_callback)
         end
       end
 

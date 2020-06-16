@@ -8,7 +8,7 @@ any and all deprecation warnings that occur during your tests, and succinctly re
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'active_support-deprecation_test_helper'
+gem 'activesupport-deprecation_test_helper'
 ```
 
 And then execute:
@@ -17,15 +17,42 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install active_support-deprecation_test_helper
+    $ gem install activesupport-deprecation_test_helper
 
 ## Usage
-
 ### Basic Configuration
-In order to capture and report all deprecation warnings at the end of the test run, add the following to your test setup
+In order to capture and report all deprecation warnings at the end of the test run, use one of the
+following methods for configuration.
+
+#### Configuring for Supported Test Frameworks
+Currently the following test frameworks are supported out of the box:
+- Minitest (`:minitest`)
+- RSpec (`:rspec`)
+
+In order to configure you test runs in `Minitest` add the following to your `test_helper.rb`
 ```ruby
 require 'active_support/deprecation_test_helper'
-ActiveSupport::DeprecationTestHelper.configure
+ActiveSupport::DeprecationTestHelper.configure(:minitest)
+```
+
+And for `RSpec` add the following to your `spec_helper.rb` after your `RSpec.configure` block:
+```ruby
+require 'active_support/deprecation_test_helper'
+ActiveSupport::DeprecationTestHelper.configure(:rspec)
+```
+
+#### Configuring for Unsupported Test Frameworks
+If you are using an unsupported test framework and would like to use this gem, you'll need to add the
+following pieces to your test setup.
+
+1. Include `ActiveSupport::DeprecationTestHelper` into `ActiveSupport::Deprecation` using the following
+```ruby
+require 'active_support/deprecation_test_helper'
+ActiveSupport::Deprecation.include ActiveSupport::DeprecationTestHelper
+```
+2. Report all unexpected warnings at the end of the test run with
+```ruby
+ActiveSupport::DeprecationTestHelper.report_unexpected_warnings
 ```
 
 ### Expected Deprecation Warnings

@@ -9,23 +9,36 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
   end
 
   describe "#configure" do
-    subject { described_class.configure }
+    subject { described_class.configure(test_framework) }
 
-    describe "when running in Minitest" do
-      let(:minitest_stub) { Class.new }
+    describe "when rspec is specified" do
+      let(:test_framework) { :rspec }
+      before { expect(RSpec.configuration).to receive(:after).with(:all, described_class.after_all_callback) }
 
-      before { stub_const("Minitest", minitest_stub) }
-
-      it 'configures an after all hook' do
-        expect(Minitest).to receive(:after_run).with(described_class.after_all_callback)
-        subject
+      it 'does not raise an error' do
+        expect { subject }.to_not raise_error
       end
     end
 
-    describe "when running in RSpec" do
-      it 'configures an after all hook' do
-        expect(RSpec.configuration).to receive(:after).with(:all, described_class.after_all_callback)
-        subject
+    describe "when minitest is specified" do
+      let(:test_framework) { :minitest }
+      let(:minitest_stub) { Class.new }
+
+      before do
+        stub_const("Minitest", minitest_stub)
+        expect(minitest_stub).to receive(:after_run).with(described_class.after_all_callback)
+      end
+
+      it 'does not raise an error' do
+        expect { subject }.to_not raise_error
+      end
+    end
+
+    describe "when an unsupported framework is specified" do
+      let(:test_framework) { :unsupported }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error(/Unexpected test framework encountered/)
       end
     end
   end
@@ -91,7 +104,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
 
     before do
       expect(RSpec.configuration).to receive(:after).with(:all, described_class.after_all_callback)
-      described_class.configure
+      described_class.configure(:rspec)
       described_class.allow_warning /this is allowed/
     end
 
