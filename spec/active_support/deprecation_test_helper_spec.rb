@@ -9,11 +9,13 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
   end
 
   describe "#configure" do
+    let(:after_all_callback) { double(Proc) }
     subject { described_class.configure(test_framework) }
+    before { allow(described_class).to receive(:after_all_callback).and_return(after_all_callback) }
 
     describe "when rspec is specified" do
       let(:test_framework) { :rspec }
-      before { expect(RSpec.configuration).to receive(:after).with(:all, described_class.after_all_callback) }
+      before { expect(RSpec.configuration).to receive(:after).with(:all, after_all_callback) }
 
       it 'does not raise an error' do
         expect { subject }.to_not raise_error
@@ -26,7 +28,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
 
       before do
         stub_const("Minitest", minitest_stub)
-        expect(minitest_stub).to receive(:after_run).with(described_class.after_all_callback)
+        expect(minitest_stub).to receive(:after_run).with(after_all_callback)
       end
 
       it 'does not raise an error' do
@@ -69,63 +71,87 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
     it { should be_a(Proc) }
 
     describe "when executed" do
-      before  { expect(described_class).to receive(:report_unexpected_warnings).and_return(true) }
       subject { callback.call }
-      it { should eq(true) }
+      before  { allow(described_class).to receive(:unexpected_warnings).and_return(unexpected_warnings) }
+
+      describe "when there are unexpected exceptions" do
+        let(:unexpected_warnings) { ["hello world"] }
+        before { expect(described_class).to receive(:warn).and_return(true) }
+        it { should eq(true) }
+      end
+
+      describe "when there are no unexpected exceptions" do
+        let(:unexpected_warnings) { [] }
+        before { expect(described_class).to_not receive(:warn) }
+        it { should eq(false) }
+      end
     end
   end
 
-  describe "#report_unexpected_warnings" do
+  describe "#unexpected_warnings_message" do
     before  { allow(described_class).to receive(:unexpected_warnings).and_return(unexpected_warnings) }
-    subject { described_class.report_unexpected_warnings }
+    subject { described_class.unexpected_warnings_message }
 
     describe "when there were no unexpected warnings" do
       let(:unexpected_warnings) { [] }
+      let(:expected_message) { <<~EOS.chomp }
+        =====
+        Unexpected Deprecation Warnings Encountered
+        =====
+      EOS
       before { expect(described_class).to_not receive(:warn) }
-      it { should eq(true) }
+      it { should eq(expected_message) }
     end
 
     describe "when there were unexpected warnings" do
       let(:unexpected_warnings) { ["hello world"] }
-      let(:expected_warning) { <<~EOS.chomp }
+      let(:expected_message) { <<~EOS.chomp }
         =====
         Unexpected Deprecation Warnings Encountered
           hello world
         =====
       EOS
-      before { expect(described_class).to receive(:warn).with(expected_warning).and_return(true) }
-      it { should eq(true) }
+      it { should eq(expected_message) }
     end
   end
 
   describe "when ActiveSupport::DeprecationTestHelper is configured" do
-    let(:after_all_callback) { double(Proc) }
-    subject { described_class.report_unexpected_warnings }
+    subject { described_class.unexpected_warnings_message }
 
     before do
-      expect(RSpec.configuration).to receive(:after).with(:all, described_class.after_all_callback)
+      expect(RSpec.configuration).to receive(:after).with(:all, anything)
       described_class.configure(:rspec)
       described_class.allow_warning /this is allowed/
     end
 
     describe "when deprecation warning occurs that is allowed" do
+      let(:expected_message) { <<~EOS.chomp }
+        =====
+        Unexpected Deprecation Warnings Encountered
+        =====
+      EOS
+
       before do
         ActiveSupport::Deprecation.deprecation_warning(:hello_world, "this is allowed")
-        expect(described_class).to_not receive(:warn)
       end
 
-      it { should eq(true) }
+      it { should eq(expected_message) }
     end
 
     describe "when deprecation warning occurs that is not allowed" do
       let(:expected_warning) { /hello_world is deprecated and will be removed/ }
+      let(:expected_message) { <<~EOS.chomp }
+        =====
+        Unexpected Deprecation Warnings Encountered
+          hello_world is deprecated and will be removed .*
+        =====
+      EOS
 
       before do
-        expect(described_class).to receive(:warn).with(expected_warning).and_return(true)
         ActiveSupport::Deprecation.deprecation_warning(:hello_world, "this is not allowed")
       end
 
-      it { should eq(true) }
+      it { should match(expected_message) }
     end
   end
 end

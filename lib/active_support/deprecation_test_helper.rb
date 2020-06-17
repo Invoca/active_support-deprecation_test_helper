@@ -35,14 +35,13 @@ module ActiveSupport
       end
 
       def after_all_callback
-        @after_all_callback ||= -> { report_unexpected_warnings }
+        -> { unexpected_warnings.any? and warn unexpected_warnings_message }
       end
 
-      def report_unexpected_warnings
-        unexpected_warnings.empty? or warn <<~EOS.chomp
+      def unexpected_warnings_message
+        <<~EOS.chomp
           =====
-          Unexpected Deprecation Warnings Encountered
-            #{unexpected_warnings.to_a.join("\n  ")}
+          #{(['Unexpected Deprecation Warnings Encountered'] + unexpected_warnings.to_a).join("\n  ")}
           =====
         EOS
       end
