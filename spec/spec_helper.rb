@@ -2,6 +2,7 @@
 
 require "bundler/setup"
 require "active_support/deprecation_test_helper"
+require "pry"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

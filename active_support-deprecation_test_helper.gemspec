@@ -9,17 +9,18 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Invoca"]
   spec.email         = ["operations@invoca.com"]
 
-  spec.summary       = ""
-  spec.description   = ""
-  spec.homepage      = "https://github.com/Invoca/activesupport-deprecation_test_helper"
+  spec.summary       = "A test helper that removes `ActiveSupport::Deprecation` noise from being interlaced in your test output."
+  spec.description   = [
+    "A test helper that removes `ActiveSupport::Deprecation` noise from being interlaced in your test output.",
+    "Instead this gem collects any and all deprecation warnings that occur during your tests, and succinctly reports them at the end of the test run."
+  ].join(' ')
+  spec.homepage      = "https://github.com/Invoca/active_support-deprecation_test_helper"
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
   spec.metadata = {
-    'allowed_push_host' => '',
-    'homepage_uri'      => 'https://github.com/Invoca/activesupport-deprecation_test_helper',
-    'source_code_uri'   => 'https://github.com/Invoca/activesupport-deprecation_test_helper',
-    'changelog_uri'     => 'https://github.com/Invoca/activesupport-deprecation_test_helper/blob/master/CHANGELOG.md'
+    'allowed_push_host' => 'https://rubygems.org',
+    'homepage_uri'      => 'https://github.com/Invoca/active_support-deprecation_test_helper',
+    'source_code_uri'   => 'https://github.com/Invoca/active_support-deprecation_test_helper',
+    'changelog_uri'     => 'https://github.com/Invoca/active_support-deprecation_test_helper/blob/master/CHANGELOG.md'
   }
 
   # Specify which files should be added to the gem when it is released.
@@ -31,5 +32,5 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'activesupport', '>= 4.2'
+  spec.add_dependency 'activesupport', '>= 4.2', '< 7'
 end
