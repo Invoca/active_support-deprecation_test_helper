@@ -16,7 +16,7 @@ module ActiveSupport
 
         case test_framework
         when :rspec
-          RSpec.configuration.after(:all, &after_all_callback)
+          RSpec.configuration.after(:suite) { after_all_callback.call }
         when :minitest
           Minitest.after_run(&after_all_callback)
         end

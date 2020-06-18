@@ -15,7 +15,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
 
     describe "when rspec is specified" do
       let(:test_framework) { :rspec }
-      before { expect(RSpec.configuration).to receive(:after).with(:all) }
+      before { expect(RSpec.configuration).to receive(:after).with(:suite) }
 
       it 'does not raise an error' do
         expect { subject }.to_not raise_error
@@ -119,7 +119,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
     subject { described_class.unexpected_warnings_message }
 
     before do
-      expect(RSpec.configuration).to receive(:after).with(:all)
+      expect(RSpec.configuration).to receive(:after).with(:suite)
       described_class.configure(:rspec)
       described_class.allow_warning /this is allowed/
     end
