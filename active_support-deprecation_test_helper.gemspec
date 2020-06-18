@@ -9,8 +9,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Invoca"]
   spec.email         = ["operations@invoca.com"]
 
-  spec.summary       = ""
-  spec.description   = ""
+  spec.summary       = "A test helper that removes `ActiveSupport::Deprecation` noise from being interlaced in your test output."
+  spec.description   = [
+    "A test helper that removes `ActiveSupport::Deprecation` noise from being interlaced in your test output.",
+    "Instead this gem collects any and all deprecation warnings that occur during your tests, and succinctly reports them at the end of the test run."
+  ].join(' ')
   spec.homepage      = "https://github.com/Invoca/active_support-deprecation_test_helper"
 
   spec.metadata = {
