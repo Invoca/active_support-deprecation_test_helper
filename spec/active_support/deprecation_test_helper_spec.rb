@@ -9,13 +9,13 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
   end
 
   describe "#configure" do
-    let(:after_all_callback) { double(Proc) }
+    let(:after_all_callback) { -> {} }
     subject { described_class.configure(test_framework) }
     before { allow(described_class).to receive(:after_all_callback).and_return(after_all_callback) }
 
     describe "when rspec is specified" do
       let(:test_framework) { :rspec }
-      before { expect(RSpec.configuration).to receive(:after).with(:all, after_all_callback) }
+      before { expect(RSpec.configuration).to receive(:after).with(:all) }
 
       it 'does not raise an error' do
         expect { subject }.to_not raise_error
@@ -28,7 +28,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
 
       before do
         stub_const("Minitest", minitest_stub)
-        expect(minitest_stub).to receive(:after_run).with(after_all_callback)
+        expect(minitest_stub).to receive(:after_run)
       end
 
       it 'does not raise an error' do
@@ -119,7 +119,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
     subject { described_class.unexpected_warnings_message }
 
     before do
-      expect(RSpec.configuration).to receive(:after).with(:all, anything)
+      expect(RSpec.configuration).to receive(:after).with(:all)
       described_class.configure(:rspec)
       described_class.allow_warning /this is allowed/
     end
