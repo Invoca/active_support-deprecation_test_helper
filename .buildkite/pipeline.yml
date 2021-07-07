@@ -1,0 +1,76 @@
+steps:
+  - label: ":rspec: :rails: Current Rails Version Tests"
+    timeout_in_minutes: 30
+    env:
+      JUNIT_OUTPUT: spec/reports/current/rspec.xml
+    agents:
+      queue: ruby
+      ruby: 2.6.5
+    artifact_paths: spec/reports/current/*.xml
+    commands:
+      - bundle install
+      - bundle exec rake
+
+  - label: ":rspec: :rails: Rails 4 Tests"
+    timeout_in_minutes: 30
+    env:
+      JUNIT_OUTPUT: spec/reports/rails-4/rspec.xml
+    agents:
+      queue: ruby
+      ruby: 2.6.5
+    artifact_paths: spec/reports/rails-4/*.xml
+    commands:
+      - bundle install
+      - bundle exec appraisal install
+      - bundle exec appraisal rails-4 rake
+
+  - label: ":rspec: :rails: Rails 5 Tests"
+    timeout_in_minutes: 30
+    env:
+      JUNIT_OUTPUT: spec/reports/rails-5/rspec.xml
+    agents:
+      queue: ruby
+      ruby: 2.6.5
+    artifact_paths: spec/reports/rails-5/*.xml
+    commands:
+      - bundle install
+      - bundle exec appraisal install
+      - bundle exec appraisal rails-5 rake
+
+  - label: ":rspec: :rails: Rails 6 Tests"
+    timeout_in_minutes: 30
+    env:
+      JUNIT_OUTPUT: spec/reports/rails-6/rspec.xml
+    agents:
+      queue: ruby
+      ruby: 2.6.5
+    artifact_paths: spec/reports/rails-6/*.xml
+    commands:
+      - bundle install
+      - bundle exec appraisal install
+      - bundle exec appraisal rails-6 rake
+
+  - wait: ~
+    continue_on_failure: true
+
+  - label: Test Summary Annotate
+    timeout_in_minutes: 10
+    agents:
+      queue: ruby
+      ruby: 2.6.5
+    plugins:
+      - invoca/test-summary#invoca-integration:
+          inputs:
+            - label: ":rspec: :rails: Current Rails Version Tests"
+              artifact_path: spec/reports/current/*
+              type: junit
+            - label: ":rspec: :rails: Rails 4 Tests"
+              artifact_path: spec/reports/rails-4/*
+              type: junit
+            - label: ":rspec: :rails: Rails 5 Tests"
+              artifact_path: spec/reports/rails-5/*
+              type: junit
+            - label: ":rspec: :rails: Rails 6 Tests"
+              artifact_path: spec/reports/rails-6/*
+              type: junit
+          run_without_docker: true
