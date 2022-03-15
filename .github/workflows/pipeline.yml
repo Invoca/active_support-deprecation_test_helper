@@ -21,7 +21,7 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-        bundler: 1.17.3
+        bundler: 2.2.29
         bundler-cache: true
     - name: Unit tests
       run: bundle exec rake
