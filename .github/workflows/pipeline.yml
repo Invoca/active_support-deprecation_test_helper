@@ -11,7 +11,6 @@ jobs:
         ruby: [2.6, 2.7]
         gemfile:
         - Gemfile
-        - gemfiles/rails_4.gemfile
         - gemfiles/rails_5.gemfile
         - gemfiles/rails_6.gemfile
     env:
