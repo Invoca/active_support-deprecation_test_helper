@@ -4,6 +4,13 @@ Inspired by [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Note: this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - Unreleased
+### Added
+- Added explicit support for Ruby 2.7, 3.0, and 3.1
+
+### Removed
+- Removed support for Rails 4
+
 ## [0.1.2] - 2020-06-18
 ### Fixed
 - RSpec configuration bug where after(:suite) callback was unable to execute successfully
