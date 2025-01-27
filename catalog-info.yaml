@@ -22,6 +22,8 @@ metadata:
   tags:
   - ruby
   - gem
+  - public
+  - rails-dependent
   annotations:
     buildkite.com/project-slug: Invoca/active_support-deprecation_test_helper
     github.com/project-slug: Invoca/active_support-deprecation_test_helper
