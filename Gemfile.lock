@@ -25,12 +25,13 @@ GEM
       concurrent-ruby (~> 1.0)
     method_source (1.0.0)
     minitest (5.18.0)
-    pry (0.13.1)
+    mutex_m (0.3.0)
+    pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry-byebug (3.9.0)
+    pry-byebug (3.10.1)
       byebug (~> 11.0)
-      pry (~> 0.13.0)
+      pry (>= 0.13, < 0.15)
     rake (13.0.1)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -58,6 +59,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport-deprecation_test_helper!
   appraisal
+  mutex_m
   pry
   pry-byebug
   rake (~> 13.0)
@@ -65,4 +67,4 @@ DEPENDENCIES
   rspec_junit_formatter (~> 0.4)
 
 BUNDLED WITH
-   2.2.29
+   2.6.3
