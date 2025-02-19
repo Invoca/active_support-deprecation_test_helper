@@ -1,13 +1,4 @@
 # frozen_string_literal: true
 
-appraise 'rails-5' do
-  gem 'activesupport', '~> 5.2'
-end
-
-appraise 'rails-6' do
-  gem 'activesupport', '~> 7.0'
-end
-
-appraise 'rails-7' do
-  gem 'activesupport', '~> 7.0'
-end
+require "appraisal/matrix"
+appraisal_matrix(rails: "7.0")

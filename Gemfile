@@ -8,6 +8,7 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gemspec
 
 gem "appraisal"
+gem "appraisal-matrix"
 gem "pry"
 gem 'pry-byebug'
 gem "rake",                  "~> 13.0"
