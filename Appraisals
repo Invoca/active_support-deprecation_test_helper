@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
 require "appraisal/matrix"
-appraisal_matrix(rails: "7.0")
+appraisal_matrix(activesupport: "7.0")
