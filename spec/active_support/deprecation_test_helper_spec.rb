@@ -132,8 +132,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
       EOS
 
       before do
-        deprecator = ActiveSupport::Deprecation.new("1.0", "active_support-deprecation_test_helper")
-        deprecator.deprecation_warning(:hello_world, "this is allowed")
+        ActiveSupport::Deprecation.new('8.0').deprecation_warning(:hello_world, "this is allowed")
       end
 
       it { should eq(expected_message) }
@@ -149,8 +148,7 @@ RSpec.describe ActiveSupport::DeprecationTestHelper do
       EOS
 
       before do
-        deprecator = ActiveSupport::Deprecation.new("1.0", "active_support-deprecation_test_helper")
-        deprecator.deprecation_warning(:hello_world, "this is not allowed")
+        ActiveSupport::Deprecation.new('8.0').deprecation_warning(:hello_world, "this is not allowed")
       end
 
       it { should match(expected_message) }

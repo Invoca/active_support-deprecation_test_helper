@@ -9,7 +9,7 @@ gemspec
 
 gem "appraisal"
 gem "appraisal-matrix"
-gem 'mutex_m'
+gem "mutex_m"
 gem "pry"
 gem 'pry-byebug'
 gem "rake",                  "~> 13.0"
